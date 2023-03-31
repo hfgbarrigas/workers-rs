@@ -1,7 +1,7 @@
 use std::convert::TryInto;
 
 use serde::Serialize;
-use wasm_bindgen::JsCast;
+use wasm_bindgen::{JsCast, JsValue};
 use wasm_bindgen_futures::JsFuture;
 use worker_sys::ext::CacheStorageExt;
 
@@ -102,7 +102,7 @@ impl Cache {
         &self,
         key: K,
         ignore_method: bool,
-    ) -> Result<Option<Response>> {
+    ) -> Result<Option<JsValue>> {
         let mut options = web_sys::CacheQueryOptions::new();
         options.ignore_method(ignore_method);
 
@@ -120,9 +120,7 @@ impl Cache {
         if result.is_undefined() {
             Ok(None)
         } else {
-            let edge_response: web_sys::Response = result.into();
-            let response = Response::from(edge_response);
-            Ok(Some(response))
+            Ok(Some(result))
         }
     }
 
