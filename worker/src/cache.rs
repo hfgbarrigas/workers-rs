@@ -102,7 +102,7 @@ impl Cache {
         &self,
         key: K,
         ignore_method: bool,
-    ) -> Result<Option<JsValue>> {
+    ) -> Result<Option<web_sys::Response>> {
         let mut options = web_sys::CacheQueryOptions::new();
         options.ignore_method(ignore_method);
 
@@ -120,7 +120,7 @@ impl Cache {
         if result.is_undefined() {
             Ok(None)
         } else {
-            Ok(Some(result))
+            Ok(Some(result.into()))
         }
     }
 
